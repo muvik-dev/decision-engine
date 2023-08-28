@@ -7,17 +7,22 @@
             <el-input v-model="form.personalCode"></el-input>
           </el-form-item>
           <el-form-item label="Loan Amount:" prop="loanAmount">
-            <el-input-number v-model="form.loanAmount" controls-position="right" :min="2000" :max="10000"></el-input-number>
+            <el-input-number v-model="form.loanAmount" controls-position="right" :min="2000" :max="10000" @change="clearResult()"></el-input-number>
           </el-form-item>
           <el-form-item label="Loan Period (months):" prop="loanPeriod">
-            <el-input-number v-model="form.loanPeriod" controls-position="right" :min="12" :max="60"></el-input-number>
+            <el-input-number v-model="form.loanPeriod" controls-position="right" :min="12" :max="60" @change="clearResult()"></el-input-number>
           </el-form-item>
         </el-form>
         <el-button type="primary" @click="submitForm('ruleForm')">Submit</el-button>
       </el-col>
     </el-row>
-    <el-tag v-if="form.decision" :type="form.decision === 'POSITIVE' ? 'success' : 'danger'" class="credit-tag">{{form.decision }}</el-tag>
-    <el-tag v-if="form.approvedAmount" class="credit-tag">Approved Amount: {{ form.approvedAmount }}</el-tag>
+    <div v-if="result.decision">
+      <el-tag :type="result.decision === 'POSITIVE' ? 'success' : 'danger'" class="credit-tag">{{result.decision }}</el-tag>
+      <el-tag class="credit-tag">Approved Amount: {{ result.approvedAmount }}</el-tag>
+    </div>
+    <div v-if="result.decision && form.loanPeriod !== result.loanPeriod">
+      <el-tag type="info">But, you can take loan of {{ form.loanAmount }} if you choose a period of {{ result.loanPeriod }} months</el-tag>
+    </div>
   </div>
 </template>
 
@@ -30,15 +35,17 @@ export default {
       form: {
         personalCode: '',
         loanAmount: 2000,
-        loanPeriod: 12,
+        loanPeriod: 12
+      },
+      result: {
         decision: null,
-        approvedAmount: null
+        approvedAmount: null,
+        loanPeriod: null
       },
       formRules: {
         personalCode: [
-          { required: true, message: 'Please input Personal code', trigger: 'blur' },
-          { min: 1, message: 'Length can\'t be empty', trigger: 'blur' }
-        ],
+          { required: true, message: 'Please input Personal code', trigger: 'blur', min: 1 }
+        ]
       }
     }
   },
@@ -47,8 +54,9 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           getDecision(this.form).then((res) => {
-            this.form.decision = res.data.decision;
-            this.form.approvedAmount = res.data.approvedAmount;
+            this.result.decision = res.data.decision;
+            this.result.approvedAmount = res.data.approvedAmount;
+            this.result.loanPeriod = res.data.loanPeriod;
           }).catch(() => {
             this.$message.error('Error')
           })
@@ -57,6 +65,13 @@ export default {
           return false;
         }
       });
+    },
+    clearResult() {
+      this.result = {
+        decision: null,
+        approvedAmount: null,
+        loanPeriod: null
+      }
     }
   }
 }
@@ -72,6 +87,6 @@ export default {
   margin-top: 60px;
 }
 .credit-tag {
-  margin: 0 10px;
+  margin: 10px;
 }
 </style>
