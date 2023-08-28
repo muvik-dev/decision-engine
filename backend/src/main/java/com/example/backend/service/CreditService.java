@@ -17,12 +17,20 @@ public class CreditService {
 
         if (creditScore >= 1) {
             creditDecisionDto.setDecision(DecisionStatus.POSITIVE);
-            creditDecisionDto.setApprovedAmount(loanAmount);
         } else {
-            double maxApprovedAmount = creditModifier * loanPeriod;
+            for (int i = 1; loanPeriod <= 60 && i <= 60; i++) {
+                double maxApprovedAmount = creditModifier * loanPeriod;
+                if (maxApprovedAmount < loanAmount) {
+                    loanPeriod++;
+                } else {
+                    creditDecisionDto.setLoanPeriod(loanPeriod);
+                    break;
+                }
+            }
             creditDecisionDto.setDecision(DecisionStatus.NEGATIVE);
-            creditDecisionDto.setApprovedAmount(maxApprovedAmount);
         }
+
+        creditDecisionDto.setApprovedAmount(creditModifier * loanPeriod);
         return creditDecisionDto;
     }
 
