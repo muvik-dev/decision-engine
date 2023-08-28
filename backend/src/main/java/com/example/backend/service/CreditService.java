@@ -14,6 +14,7 @@ public class CreditService {
 
         int creditModifier = calculateCreditModifier(personalCode);
         double creditScore = (creditModifier / loanAmount) * loanPeriod;
+        double approvedAmount = creditModifier * loanPeriod;
 
         if (creditScore >= 1) {
             creditDecisionDto.setDecision(DecisionStatus.POSITIVE);
@@ -30,7 +31,7 @@ public class CreditService {
             creditDecisionDto.setDecision(DecisionStatus.NEGATIVE);
         }
 
-        creditDecisionDto.setApprovedAmount(creditModifier * loanPeriod);
+        creditDecisionDto.setApprovedAmount(approvedAmount);
         return creditDecisionDto;
     }
 
