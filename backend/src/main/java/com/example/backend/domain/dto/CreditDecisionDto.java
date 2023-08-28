@@ -20,6 +20,14 @@ public class CreditDecisionDto {
         return loanAmount;
     }
 
+    public DecisionStatus getDecision() {
+        return decision;
+    }
+
+    public double getApprovedAmount() {
+        return approvedAmount;
+    }
+
     public int getLoanPeriod() {
         return loanPeriod;
     }
@@ -32,4 +40,15 @@ public class CreditDecisionDto {
         this.approvedAmount = approvedAmount;
     }
 
+    public void setPersonalCode(String personalCode) {
+        this.personalCode = personalCode;
+    }
+
+    public void setLoanAmount(double loanAmount) {
+        this.loanAmount = loanAmount;
+    }
+
+    public void setLoanPeriod(int loanPeriod) {
+        this.loanPeriod = loanPeriod;
+    }
 }
