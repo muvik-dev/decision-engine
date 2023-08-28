@@ -20,7 +20,7 @@ public class CreditController {
     }
 
 
-    @PostMapping()
+    @PostMapping("/decision")
     public CreditDecisionDto makeDecision(@RequestBody CreditDecisionDto request) {
         return creditService.makeDecision(request);
     }
