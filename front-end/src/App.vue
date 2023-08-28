@@ -47,7 +47,6 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           getDecision(this.form).then((res) => {
-            console.log('res: ', res.data)
             this.form.decision = res.data.decision;
             this.form.approvedAmount = res.data.approvedAmount;
           }).catch(() => {
