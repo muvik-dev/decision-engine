@@ -12,6 +12,8 @@
 #### 2. Launch the backend by executing the commands below:
  ```$bash
  cd backend
+ and
+ run file in src/main/java/com/example/backend/BackendApplication.java
  ```
 
 #### 3. Run Docker by executing the commands below:
