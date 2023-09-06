@@ -24,5 +24,5 @@
 
 #### 4. Open website:
  ```$bash
-open http://localhost/
+http://localhost/
  ```
