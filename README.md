@@ -21,3 +21,8 @@
  cd infrastructure
  docker-compose up -d
  ```
+
+#### 4. Open website:
+ ```$bash
+open http://localhost/
+ ```
